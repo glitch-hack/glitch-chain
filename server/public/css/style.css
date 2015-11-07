@@ -23,11 +23,11 @@ a {
     height: 500px;
 }
 
-#glitch-button {
-  margin:auto;
+.action-button {
   width: 100px;
-  display: block;
+  margin:3px;
 }
+
 
 #glitch-image {
   width:0;

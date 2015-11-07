@@ -37,24 +37,27 @@
 						<input id="qualitySlider" type="range" min="0" max="100"/>
 						<div id="qualityValue">50</div>
 					</li>
+
+					<li>
+						<div class="verticalButtons" style="margin-top: 29px">
+							<button id="randomise-button" class="action-button"> Randomise </button>
+						  <button id="glitch-button" class="action-button"> Glitch </button>
+						</div>
+					</li>
 				</ul>
 			</div>
 
-			<button id="glitch-button"> Glitch </button>
+
 		</div>
 
 		</div>
 
 		<script>
-		function glitchStart() {
-			var my_image = document.getElementById('glitch-image');
-			var my_canvas = document.getElementById('glitch-canvas');
-			var ctx = my_canvas.getContext('2d');
 
-			// draw the image on the canvas
-			ctx.drawImage(my_image, 0, 0);
-			var my_image_data = ctx.getImageData( 0, 0, my_canvas.clientWidth, my_canvas.clientHeight );
+    var sourceImage = document.getElementById('glitch-image');
+		var targetCanvas = document.getElementById('glitch-canvas');
 
+		function glitchClicked(){
 			var amountValue = document.getElementById('amountValue').innerHTML;
 			var seedValue = document.getElementById('seedValue').innerHTML;
 			var iterationsValue = document.getElementById('iterationsValue').innerHTML;
@@ -66,46 +69,81 @@
 				iterations: iterationsValue,
 				quality: qualityValue };
 
+				doGlitch(sourceImage, targetCanvas, parameters);
+		}
+
+		function randomiseClicked()
+		{
+			document.getElementById('amountSlider').value = Math.floor((Math.random() * 100) + 1);
+			document.getElementById('seedSlider').value = Math.floor((Math.random() * 100) + 1);
+			document.getElementById('iterationsSlider').value = Math.floor((Math.random() * 100) + 1);
+			document.getElementById('qualitySlider').value = Math.floor((Math.random() * 100) + 1);
+
+			amountSliderChanged();
+			seedSliderChanged();
+			iterationsSliderChanged();
+			qualitySliderChanged();
+		}
+
+		function doGlitch(source, target, parameters) {
+			var ctx = targetCanvas.getContext('2d');
+
+			// draw the image on the canvas
+			ctx.drawImage(source, 0, 0);
+			var imageData = ctx.getImageData(0, 0, target.clientWidth, target.clientHeight);
+
 			function drawGlitchedImageData(image_data) {
-					ctx.putImageData(image_data, 0, 0);
+		  	ctx.putImageData(image_data, 0, 0);
 			}
 
-			glitch(my_image_data, parameters, drawGlitchedImageData);
+			glitch(imageData, parameters, drawGlitchedImageData);
+		}
+
+		function setOriginalImage(){
+			var ctx = targetCanvas.getContext('2d');
+			ctx.drawImage(sourceImage, 0, 0);
 		}
 
 		function amountSliderChanged() {
 				document.getElementById('amountValue').innerHTML = document.getElementById('amountSlider').value;
+				glitchClicked();
 		}
 
 		function seedSliderChanged() {
 				document.getElementById('seedValue').innerHTML = document.getElementById('seedSlider').value;
+				glitchClicked();
 		}
 
 		function iterationsSliderChanged() {
 				document.getElementById('iterationsValue').innerHTML = document.getElementById('iterationsSlider').value;
+				glitchClicked();
 		}
 
 		function qualitySliderChanged() {
 				document.getElementById('qualityValue').innerHTML = document.getElementById('qualitySlider').value;
+				glitchClicked();
 		}
 
 			window.addEventListener("load", function() {
 				 // Get elements
-				 var seedSlider = document.getElementById('seedSlider');
 				 var glitchButton = document.getElementById('glitch-button');
+				 var randomiseButton = document.getElementById('randomise-button');
 
 				 // Add event listeners
-				 amountSlider.addEventListener('change', amountSliderChanged);
-				 seedSlider.addEventListener('change', seedSliderChanged);
-				 iterationsSlider.addEventListener('change', iterationsSliderChanged);
-				 qualitySlider.addEventListener('change', qualitySliderChanged);
-				 glitchButton.addEventListener('click', glitchStart);
+				 amountSlider.addEventListener('input', amountSliderChanged);
+				 seedSlider.addEventListener('input', seedSliderChanged);
+				 iterationsSlider.addEventListener('input', iterationsSliderChanged);
+				 qualitySlider.addEventListener('input', qualitySliderChanged);
+				 glitchButton.addEventListener('click', glitchClicked);
+				 randomiseButton.addEventListener('click', randomiseClicked);
 
 				 // Call changed event handlers to initialise values
 				 amountSliderChanged();
 				 seedSliderChanged();
 				 iterationsSliderChanged();
 				 qualitySliderChanged();
+
+				 setOriginalImage()
 			});
 
 
