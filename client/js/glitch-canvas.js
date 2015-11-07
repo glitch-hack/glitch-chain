@@ -1,12 +1,8 @@
 //! glitch-canvas by snorpey, MIT License
 (function(window, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(factory);
-    } else if (typeof exports === "object") {
-        module.exports = factory();
-    } else {
+    
         window.glitch = factory();
-    }
+
 })(this, function() {
     var canvas_1 = document.createElement("canvas");
     var canvas_2 = document.createElement("canvas");
