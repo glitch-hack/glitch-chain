@@ -69,7 +69,12 @@
 		<script type="text/javascript" src="js/image_utils.js"></script>
 		<script>
 	        // for testing only
-    	    getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
+			// getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
+
+			var hexHash = params2string(1, 2, 3, 4);
+			console.log(hexHash);
+			var params = string2Params(hexHash);
+			console.log(params);
 
 		</script>
 
