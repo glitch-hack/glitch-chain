@@ -1,0 +1,48 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#main-wrapper {
+	width: 70%;
+	margin: auto;
+  z-index:1;
+}
+
+#glitch-canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 500px;
+    height: 500px;
+}
+
+#glitch-button {
+  margin:auto;
+  width: 100px;
+  display: block;
+}
+
+#glitch-image {
+  width:0;
+  height:0;
+}
+
+#parameter-list {
+  list-style: none;
+  float:left;
+}
+
+#parameter-list li {
+  float:left;
+  list-style: none;
+  text-align: center;
+  width:150px;
+  margin-right: 10px;
+}

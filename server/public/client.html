@@ -1,0 +1,114 @@
+<html>
+	<head>
+		<title> glitch-chain client </title>
+		<script src="lib/glitch-canvas.js"> </script>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+
+	<body>
+		<div id="main-wrapper">
+		<h1> Glitch-Client </h1>
+			<canvas id="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+
+			<img id="glitch-image" src="test.jpg"> </img>
+
+			<div id="toolpanel">
+				<ul id="parameter-list">
+					<li>
+						<p>Amount</p>
+						<input id="amountSlider" type="range" min="0" max="100"/>
+						<div id="amountValue">50</div>
+					</li>
+
+					<li>
+						<p>Seed</p>
+						<input id="seedSlider" type="range" min="0" max="100"/>
+						<div id="seedValue">50</div>
+					</li>
+
+					<li>
+						<p>Iterations</p>
+						<input id="iterationsSlider" type="range" min="0" max="100"/>
+						<div id="iterationsValue">50</div>
+					</li>
+
+					<li>
+						<p>Quality</p>
+						<input id="qualitySlider" type="range" min="0" max="100"/>
+						<div id="qualityValue">50</div>
+					</li>
+				</ul>
+			</div>
+
+			<button id="glitch-button"> Glitch </button>
+		</div>
+
+		</div>
+
+		<script>
+		function glitchStart() {
+			var my_image = document.getElementById('glitch-image');
+			var my_canvas = document.getElementById('glitch-canvas');
+			var ctx = my_canvas.getContext('2d');
+
+			// draw the image on the canvas
+			ctx.drawImage(my_image, 0, 0);
+			var my_image_data = ctx.getImageData( 0, 0, my_canvas.clientWidth, my_canvas.clientHeight );
+
+			var amountValue = document.getElementById('amountValue').innerHTML;
+			var seedValue = document.getElementById('seedValue').innerHTML;
+			var iterationsValue = document.getElementById('iterationsValue').innerHTML;
+			var qualityValue = document.getElementById('qualityValue').innerHTML;
+
+			var parameters = {
+				amount: amountValue,
+				seed: seedValue,
+				iterations: iterationsValue,
+				quality: qualityValue };
+
+			function drawGlitchedImageData(image_data) {
+					ctx.putImageData(image_data, 0, 0);
+			}
+
+			glitch(my_image_data, parameters, drawGlitchedImageData);
+		}
+
+		function amountSliderChanged() {
+				document.getElementById('amountValue').innerHTML = document.getElementById('amountSlider').value;
+		}
+
+		function seedSliderChanged() {
+				document.getElementById('seedValue').innerHTML = document.getElementById('seedSlider').value;
+		}
+
+		function iterationsSliderChanged() {
+				document.getElementById('iterationsValue').innerHTML = document.getElementById('iterationsSlider').value;
+		}
+
+		function qualitySliderChanged() {
+				document.getElementById('qualityValue').innerHTML = document.getElementById('qualitySlider').value;
+		}
+
+			window.addEventListener("load", function() {
+				 // Get elements
+				 var seedSlider = document.getElementById('seedSlider');
+				 var glitchButton = document.getElementById('glitch-button');
+
+				 // Add event listeners
+				 amountSlider.addEventListener('change', amountSliderChanged);
+				 seedSlider.addEventListener('change', seedSliderChanged);
+				 iterationsSlider.addEventListener('change', iterationsSliderChanged);
+				 qualitySlider.addEventListener('change', qualitySliderChanged);
+				 glitchButton.addEventListener('click', glitchStart);
+
+				 // Call changed event handlers to initialise values
+				 amountSliderChanged();
+				 seedSliderChanged();
+				 iterationsSliderChanged();
+				 qualitySliderChanged();
+			});
+
+
+		</script>
+	</body>
+</html>
