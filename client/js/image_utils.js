@@ -24,9 +24,9 @@
 			{
 				parameters = getRandomParameters();
 				doGlitch(originalCanvas, parameters);
-			  diff = compare(originalCanvas, canvas2);
-				arrayOut.push(diff);
-				alert(diff);
+			  	diff = compare(originalCanvas, canvas2);
+			  	console.log(diff);
+				arrayOut.push(diff);				
 			}
 			console.log(arrayOut);
 		}
@@ -59,7 +59,7 @@
 			
 
 			function drawGlitchedImageData(image_data) {
-		  	context.putImageData(image_data, 0, 0);
+		  		context.putImageData(image_data, 0, 0);
 			}
 
 			glitch(imageData, parameters, drawGlitchedImageData);
