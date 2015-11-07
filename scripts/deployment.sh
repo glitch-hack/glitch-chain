@@ -8,7 +8,7 @@ unset GIT_DIR
 
 cd $DEPLOYMENT_PATH
 #git checkout production
-env -i git pull 
+git pull 
 
 
 # re-execute NPM to refresh dependencies
