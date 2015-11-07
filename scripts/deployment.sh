@@ -5,7 +5,7 @@ DEPLOYMENT_PATH=/srv/glitch-chain/
 GIT_WORK_TREE=$DEPLOYMENT_PATH
 
 cd $DEPLOYMENT_PATH
-git checkout production
+git branch production
 git pull 
 
 
