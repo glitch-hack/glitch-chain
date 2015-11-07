@@ -4,7 +4,7 @@
 			<script type="text/javascript" src="js/buffer.js"></script>
     		<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
 			<script src="lib/glitch-canvas.js"> </script>
-		
+
 			<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 
@@ -150,8 +150,12 @@
 			});
 
 
-    
+
         // for testing only
+
+
+
+
         function rng () {
             return new Buffer('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
         }
@@ -161,8 +165,22 @@
         var address = keyPair.getAddress()
 
         console.log(keyPair, address);
-    
 
+        var getTransactions = function (address, callback) {
+            // Fetch transactions from block explorer calling `callback`
+            // on response coerced to JSON.
+            var request = new XMLHttpRequest();
+            request.open(
+                "get",
+                "https://insight.bitpay.com/api/txs?pageNum=0&address=" + address);
+            request.addEventListener("load", callback);
+            request.send()
+
+        }
+
+        var parseParams = function (tx) {
+            // Parse the glitch params from a bitcoin transaction.
+        }
 
 		</script>
 	</body>
