@@ -1,8 +1,11 @@
 <html>
 	<head>
 		<title> glitch-chain client </title>
-		<script src="lib/glitch-canvas.js"> </script>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
+			<script type="text/javascript" src="js/buffer.js"></script>
+    		<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
+			<script src="lib/glitch-canvas.js"> </script>
+		
+			<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 
 	<body>
@@ -10,7 +13,7 @@
 		<h1> Glitch-Client </h1>
 			<canvas id="glitch-canvas" style="border:1px solid #000000;"> </canvas>
 
-			<img id="glitch-image" src="test.jpg"> </img>
+			<img id="glitch-image" src="images/test.jpg"> </img>
 
 			<div id="toolpanel">
 				<ul id="parameter-list">
@@ -145,6 +148,20 @@
 
 				 setOriginalImage()
 			});
+
+
+    
+        // for testing only
+        function rng () {
+            return new Buffer('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
+        }
+
+        // generate random keyPair
+        var keyPair = bitcoin.ECPair.makeRandom({ rng: rng })
+        var address = keyPair.getAddress()
+
+        console.log(keyPair, address);
+    
 
 
 		</script>
