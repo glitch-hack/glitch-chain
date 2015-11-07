@@ -9,7 +9,7 @@ git update-server-info
 
 cd $DEPLOYMENT_PATH
 #git checkout production
-GIT_WORK_TREE="$DEPLOYMENT_PATH" git pull 
+git pull 
 
 
 # re-execute NPM to refresh dependencies
