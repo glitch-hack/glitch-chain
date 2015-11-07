@@ -1,17 +1,20 @@
 <html>
 	<head>
 		<title> glitch-chain client </title>
+			<script src="js/glitch-canvas.js"> </script>
+
 			<script type="text/javascript" src="js/buffer.js"></script>
-    		<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
-			<script src="lib/glitch-canvas.js"> </script>
-		
-			<link rel="stylesheet" type="text/css" href="css/style.css">
+  		<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
+
+			<script src="js/compare.js"> </script>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 
 	<body>
 		<div id="main-wrapper">
 		<h1> Glitch-Client </h1>
-			<canvas id="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+			<canvas id="glitch-canvas-1" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+
 
 			<img id="glitch-image" src="images/test.jpg"> </img>
 
@@ -19,36 +22,42 @@
 				<ul id="parameter-list">
 					<li>
 						<p>Amount</p>
-						<input id="amountSlider" type="range" min="0" max="100"/>
 						<div id="amountValue">50</div>
 					</li>
 
 					<li>
 						<p>Seed</p>
-						<input id="seedSlider" type="range" min="0" max="100"/>
 						<div id="seedValue">50</div>
 					</li>
 
 					<li>
 						<p>Iterations</p>
-						<input id="iterationsSlider" type="range" min="0" max="100"/>
 						<div id="iterationsValue">50</div>
 					</li>
 
 					<li>
 						<p>Quality</p>
-						<input id="qualitySlider" type="range" min="0" max="100"/>
 						<div id="qualityValue">50</div>
 					</li>
 
 					<li>
+						<p>Difference</p>
+						<div id="differenceValue"></div>
+					</li>
+
+					<li>
 						<div class="verticalButtons" style="margin-top: 29px">
-							<button id="randomise-button" class="action-button"> Randomise </button>
 						  <button id="glitch-button" class="action-button"> Glitch </button>
 						</div>
 					</li>
 				</ul>
 			</div>
+		 <canvas id="glitch-canvas-2" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+			<canvas id="glitch-canvas-3" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+			<canvas id="glitch-canvas-4" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+
+			<p id="output"> </p>
+
 
 
 		</div>
@@ -58,100 +67,93 @@
 		<script>
 
     var sourceImage = document.getElementById('glitch-image');
-		var targetCanvas = document.getElementById('glitch-canvas');
+		var originalCanvas = document.getElementById('glitch-canvas-1');
+		var canvas2 = document.getElementById('glitch-canvas-2');
+		var canvas3 = document.getElementById('glitch-canvas-3');
+		var canvas4 = document.getElementById('glitch-canvas-4');
 
 		function glitchClicked(){
-			var amountValue = document.getElementById('amountValue').innerHTML;
-			var seedValue = document.getElementById('seedValue').innerHTML;
-			var iterationsValue = document.getElementById('iterationsValue').innerHTML;
-			var qualityValue = document.getElementById('qualityValue').innerHTML;
+	 			tryGlitch(10);
+		}
 
-			var parameters = {
+		function tryGlitch(repetitions)
+		{
+			var arrayOut = [];
+			var diff = null;
+			var parameters = null;
+
+			for(x = 0; x < repetitions; x++)
+			{
+				parameters = getRandomParameters();
+				doGlitch(originalCanvas, parameters);
+			  diff = compare(originalCanvas, canvas2);
+				arrayOut.push(diff);
+				alert(diff);
+			}
+			console.log(arrayOut);
+		}
+
+
+		function getRandomParameters(){
+			var amountValue = Math.floor((Math.random() * 100) + 1);
+			var seedValue = Math.floor((Math.random() * 100) + 1);
+			var iterationsValue = Math.floor((Math.random() * 100) + 1);
+			var qualityValue = Math.floor((Math.random() * 100) + 1);
+
+			return {
 				amount: amountValue,
 				seed: seedValue,
 				iterations: iterationsValue,
 				quality: qualityValue };
-
-				doGlitch(sourceImage, targetCanvas, parameters);
 		}
 
-		function randomiseClicked()
-		{
-			document.getElementById('amountSlider').value = Math.floor((Math.random() * 100) + 1);
-			document.getElementById('seedSlider').value = Math.floor((Math.random() * 100) + 1);
-			document.getElementById('iterationsSlider').value = Math.floor((Math.random() * 100) + 1);
-			document.getElementById('qualitySlider').value = Math.floor((Math.random() * 100) + 1);
-
-			amountSliderChanged();
-			seedSliderChanged();
-			iterationsSliderChanged();
-			qualitySliderChanged();
+		function drawImage(image, canvas){
+			var context = canvas.getContext('2d');
+			context.drawImage(source, 0, 0);
 		}
 
-		function doGlitch(source, target, parameters) {
-			var ctx = targetCanvas.getContext('2d');
-
-			// draw the image on the canvas
-			ctx.drawImage(source, 0, 0);
-			var imageData = ctx.getImageData(0, 0, target.clientWidth, target.clientHeight);
+		function doGlitch(canvas, parameters) {
+			console.log("do glitch:", parameters)
+			var context = canvas.getContext('2d');
+			var imageData = context.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight);
 
 			function drawGlitchedImageData(image_data) {
-		  	ctx.putImageData(image_data, 0, 0);
+		  	context.putImageData(image_data, 0, 0);
 			}
 
 			glitch(imageData, parameters, drawGlitchedImageData);
 		}
 
-		function setOriginalImage(){
-			var ctx = targetCanvas.getContext('2d');
+		function setOriginalImage(canvas){
+			var ctx = canvas.getContext('2d');
 			ctx.drawImage(sourceImage, 0, 0);
 		}
 
-		function amountSliderChanged() {
-				document.getElementById('amountValue').innerHTML = document.getElementById('amountSlider').value;
-				glitchClicked();
-		}
-
-		function seedSliderChanged() {
-				document.getElementById('seedValue').innerHTML = document.getElementById('seedSlider').value;
-				glitchClicked();
-		}
-
-		function iterationsSliderChanged() {
-				document.getElementById('iterationsValue').innerHTML = document.getElementById('iterationsSlider').value;
-				glitchClicked();
-		}
-
-		function qualitySliderChanged() {
-				document.getElementById('qualityValue').innerHTML = document.getElementById('qualitySlider').value;
-				glitchClicked();
+		function copyCanvas(originalCanvas, targetCanvas){
+			var context = targetCanvas.getContext('2d');
+			targetCanvas.drawImage(originalCanvas, 0, 0);
 		}
 
 			window.addEventListener("load", function() {
 				 // Get elements
 				 var glitchButton = document.getElementById('glitch-button');
-				 var randomiseButton = document.getElementById('randomise-button');
+				 var parameters1 = getRandomParameters();
 
-				 // Add event listeners
-				 amountSlider.addEventListener('input', amountSliderChanged);
-				 seedSlider.addEventListener('input', seedSliderChanged);
-				 iterationsSlider.addEventListener('input', iterationsSliderChanged);
-				 qualitySlider.addEventListener('input', qualitySliderChanged);
+				 setOriginalImage(originalCanvas);
+				 setOriginalImage(canvas2);
+				 setOriginalImage(canvas3);
+
+				 //doGlitch(originalCanvas);
+
+				 doGlitch(canvas2, parameters1);
+
 				 glitchButton.addEventListener('click', glitchClicked);
-				 randomiseButton.addEventListener('click', randomiseClicked);
 
-				 // Call changed event handlers to initialise values
-				 amountSliderChanged();
-				 seedSliderChanged();
-				 iterationsSliderChanged();
-				 qualitySliderChanged();
-
-				 setOriginalImage()
 			});
 
 
-    
-        // for testing only
+
+        //for testing only
         function rng () {
             return new Buffer('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
         }
@@ -161,7 +163,7 @@
         var address = keyPair.getAddress()
 
         console.log(keyPair, address);
-    
+
 
 
 		</script>

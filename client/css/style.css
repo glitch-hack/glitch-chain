@@ -13,7 +13,7 @@ a {
   z-index:1;
 }
 
-#glitch-canvas {
+.glitch-canvas {
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;
