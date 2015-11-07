@@ -11,14 +11,19 @@ cd $DEPLOYMENT_PATH
 git pull 
 
 
+#
+# NOT USED
+#
 # re-execute NPM to refresh dependencies
+#
+#cd "$DEPLOYMENT_PATH"\server
+#npm install
+#
+#cd "$DEPLOYMENT_PATH"\client
+#npm install
+#grunt
+#
 
-cd "$DEPLOYMENT_PATH"\server
-npm install
-
-cd "$DEPLOYMENT_PATH"\client
-npm install
-grunt
 
 # should be good now
 git update-server-info

@@ -4,10 +4,11 @@
 			<script src="js/glitch-canvas.js"> </script>
 
 			<script type="text/javascript" src="js/buffer.js"></script>
-  		<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
+    	<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
+    	<script type="text/javascript" src="js/block_utils.js"></script>
+			<script type="text/javascript" src="js/glitch-canvas.js"> </script>
 
-			<script src="js/compare.js"> </script>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
+			<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 
 	<body>
@@ -63,6 +64,7 @@
 		</div>
 
 		</div>
+
 
 		<script>
 
@@ -152,20 +154,11 @@
 			});
 
 
-
-        //for testing only
-        function rng () {
-            return new Buffer('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
-        }
-
-        // generate random keyPair
-        var keyPair = bitcoin.ECPair.makeRandom({ rng: rng })
-        var address = keyPair.getAddress()
-
-        console.log(keyPair, address);
-
-
+        // for testing only
+        getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
 
 		</script>
+
+
 	</body>
 </html>
