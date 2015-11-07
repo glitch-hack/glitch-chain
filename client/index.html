@@ -6,6 +6,7 @@
 			<script type="text/javascript" src="js/buffer.js"></script>
     		<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
     		<script type="text/javascript" src="js/glitch-canvas.js"> </script>
+    		<script type="text/javascript" src="js/compare.js"> </script>
     		<script type="text/javascript" src="js/block_utils.js"></script>
 
 
@@ -69,7 +70,12 @@
 		<script type="text/javascript" src="js/image_utils.js"></script>
 		<script>
 	        // for testing only
-    	    getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
+			// getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
+
+			var hexHash = params2string(1, 2, 3, 4);
+			console.log(hexHash);
+			var params = string2Params(hexHash);
+			console.log(params);
 
 		</script>
 

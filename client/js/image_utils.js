@@ -1,12 +1,12 @@
 		//
 		// GLOBALS
 		//
-		sourceImage = document.getElementById('glitch-image');
-		originalCanvas = document.getElementById('glitch-canvas-1');
+		var sourceImage = document.getElementById('glitch-image');
+		var originalCanvas = document.getElementById('glitch-canvas-1');
 
-		canvas2 = document.getElementById('glitch-canvas-2');
-		canvas3 = document.getElementById('glitch-canvas-3');
-		canvas4 = document.getElementById('glitch-canvas-4');
+		var canvas2 = document.getElementById('glitch-canvas-2');
+		var canvas3 = document.getElementById('glitch-canvas-3');
+		var canvas4 = document.getElementById('glitch-canvas-4');
 
 
 
@@ -24,9 +24,9 @@
 			{
 				parameters = getRandomParameters();
 				doGlitch(originalCanvas, parameters);
-			  diff = compare(originalCanvas, canvas2);
-				arrayOut.push(diff);
-				alert(diff);
+			  	diff = compare(originalCanvas, canvas2);
+			  	console.log(diff);
+				arrayOut.push(diff);				
 			}
 			console.log(arrayOut);
 		}
@@ -47,7 +47,7 @@
 
 		function drawImage(image, canvas) {
 			var context = canvas.getContext('2d');
-			context.drawImage(source, 0, 0);
+			context.drawImage(image, 0, 0);
 		}
 
 		function doGlitch(canvas, parameters) {
@@ -59,7 +59,7 @@
 			
 
 			function drawGlitchedImageData(image_data) {
-		  	context.putImageData(image_data, 0, 0);
+		  		context.putImageData(image_data, 0, 0);
 			}
 
 			glitch(imageData, parameters, drawGlitchedImageData);
