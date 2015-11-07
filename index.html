@@ -1,0 +1,23 @@
+<html>
+    <title>Glitch-Chain</title>
+
+
+    <script type="text/javascript" src="foobar.js"></script>
+
+    <script type="text/javascript" src="buffer.js"></script>
+    <script type="text/javascript" src="client/js/bitcoinjs.min.js"></script>
+
+
+    <script>
+        // for testing only
+        function rng () {
+            return new Buffer('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
+        }
+
+        // generate random keyPair
+        var keyPair = bitcoin.ECPair.makeRandom({ rng: rng })
+        var address = keyPair.getAddress()
+
+        console.log(keyPair, address);
+    </script>
+</html>
