@@ -16,5 +16,9 @@ git pull
 cd "$DEPLOYMENT_PATH"\server
 npm install
 
+cd "$DEPLOYMENT_PATH"\client
+npm install
+grunt
+
 # should be good now
 git update-server-info
