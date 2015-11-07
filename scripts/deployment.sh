@@ -1,8 +1,9 @@
 #!/bin/sh
 
-DEPLOYMENT_PATH=/srv/glitch-chain/
+DEPLOYMENT_PATH="/srv/glitch-chain/"
 
 GIT_WORK_TREE="$DEPLOYMENT_PATH"
+unset GIT_DIR
 
 git update-server-info
 
