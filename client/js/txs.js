@@ -35,6 +35,8 @@ function validatePaymentTransaction(txnIn) {
 //
 // 
 function addOpReturnData(txn, data) {
+	console.log("Just before adding OP_RETURN");
+	console.log(txn);
 	txn.addOutput(bitcoin.script.nullDataOutput(data), 0);
 }
 
