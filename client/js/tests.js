@@ -3,6 +3,9 @@
 var TempPublic = '17J238WxVTpf6yN8c4c52DwVb9zaK9Cy2H';
 var TempPrivate = 'KzMScaD1gQiQR9sSn78cj1yF2WttXf42XUVE462DFfwZiwVdfABV';
 
+var TxID = '6c9f0db13bc6e2e8925ee4ca27cfdcb07350e7f0c616629c2f12c40dd6fc79ab';
+
+
 var output = document.getElementById("webSocketDebug");
 
 var testInTransaction = {
