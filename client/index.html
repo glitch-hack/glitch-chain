@@ -1,20 +1,120 @@
 <html>
 	<head>
+<<<<<<< HEAD
 		<title> glitch-chain client </title>
+=======
+		<title> Glitch-Chain Autonomous Client </title>
+
+			<!-- Bootstrap -->
+    		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" type="text/css" rel="stylesheet" />
+    		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    		<!-- Scripts -->
+    		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    		<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+>>>>>>> 04f452583fb1e46d98fcfb373723a0096a5aac24
 
 			<script src="js/glitch-canvas.js"> </script>
 			<script type="text/javascript" src="js/buffer.js"></script>
     		<script type="text/javascript" src="js/bitcoinjs.min.js"></script>
     		<script type="text/javascript" src="js/glitch-canvas.js"> </script>
+<<<<<<< HEAD
     		<script type="text/javascript" src="js/block_utils.js"></script>
 				<script type="text/javascript" src="js/compare.js"></script>
+=======
+    		<script type="text/javascript" src="js/compare.js"> </script>
+
+>>>>>>> 04f452583fb1e46d98fcfb373723a0096a5aac24
 
 			<link rel="stylesheet" type="text/css" href="css/style.css">
+			<link href="http://fonts.googleapis.com/css?family=Pacifico" type="text/css" rel="stylesheet" />
 	</head>
 
 	<body>
+		    <div class="container">
+        <div class="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Glitch Chain</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p>
+                	<strong>Autonomous Org bitcoin address: </strong>
+                    <strong class="bitcoin-address bitcoin-address-display-value" data-bc-address="19356KxTs9Bw5AAdxens5hoxDSp5bsUKse">19356KxTs9Bw5AAdxens5hoxDSp5bsUKse</strong>
+                </p>
+            </div>
+
+            <div id="bitcoin-address-template" class="bitcoin-address-container" style="display: none">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Price -->
+                            <span id="donation-usd" data-usd-amount="0.001"></span>
+                            <div id="donation-btc">
+                                Send
+                                <strong class="clickable-price" data-btc-price="0.0001">
+                                    0.0001
+                                    <i class="fa fa-btc"></i>
+                                </strong>
+                                to save your image.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Payment -->
+                            <span class="bitcoin-address-display-value"></span>
+
+                            <a href="#" class="bitcoin-address-action bitcoin-address-action-send">
+                                <i class="fa fa-btc"></i>
+                                Pay from wallet
+                            </a>
+
+                            <a href="#" class="bitcoin-address-action bitcoin-address-action-copy">
+                                <i class="fa fa-copy"></i>
+                                Copy
+                            </a>
+
+                            <a href="#" class="bitcoin-address-action bitcoin-address-action-qr">
+                                <i class="fa fa-qrcode"></i>
+                                QR code
+                            </a>
+
+                            <div class="bitcoin-action-hint bitcoin-action-hint-send">
+                                Sending payment to the address from locally installed Bitcoin wallet app.
+                            </div>
+
+                            <div class="bitcoin-action-hint bitcoin-action-hint-copy">
+                                Press CTRL + C or &#x2318; + C to copy the Bitcoin address.
+                            </div>
+
+                            <div class="bitcoin-action-hint bitcoin-action-hint-qr">
+                                <p>
+                                    Scan the QR code with your mobile Bitcoin app to
+                                    make the payment:
+                                </p>
+
+                                <div class="bitcoin-address-qr-container">
+                                    <!-- Filled in by JS on action click -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="webSocketDebug"></div>
+            </div>
+        </div>
+    </div>
+
 		<div id="main-wrapper">
-		<h1> Glitch-Client </h1>
+		<h1> Image Creator </h1>
 			<canvas id="glitch-canvas-1" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
 
 
@@ -54,25 +154,31 @@
 					</li>
 				</ul>
 			</div>
-		 <canvas id="glitch-canvas-2" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+
+		 	<canvas id="glitch-canvas-2" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
 			<canvas id="glitch-canvas-3" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
 			<canvas id="glitch-canvas-4" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
 
 			<p id="output"> </p>
-
-
 
 		</div>
 
 		</div>
 
 		<script type="text/javascript" src="js/image_utils.js"></script>
-		<script>
-	        // for testing only
-    	    getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
 
+
+		<script type="text/javascript">
+
+	        // for testing only
+			// getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
+			var d = params2string(1, 2, 3, 4);
+			console.log(d);
+			var b = string2params(d);
+			console.log(b);
 		</script>
 
-
+		<script type="text/javascript" src="http://rawgithub.com/miohtama/bitcoinaddress.js/master/dist/demo.js"></script>
+		<script type="text/javascript" src="js/block_utils.js"></script>
 	</body>
 </html>
