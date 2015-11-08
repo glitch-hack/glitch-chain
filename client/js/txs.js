@@ -75,7 +75,8 @@ function createTransaction(imagePaymentTransaction) {
 	var txnOut = new bitcoin.TransactionBuilder();
 	// Add the input (who is paying) of the form [previous transaction hash, index of the output to use]
     txnOut.addInput(transactionHash, 0);
-    txnOut.addOutput(listeningPublicAddress, totalSatoshisRecieved);
+
+    txnOut.addOutput(listeningPublicAddress, totalSatoshiToSend);
 
     return txnOut;
 }
