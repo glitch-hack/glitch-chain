@@ -75,7 +75,8 @@ function createTransaction(imagePaymentTransaction) {
 	var txnOut = new bitcoin.TransactionBuilder();
 	// Add the input (who is paying) of the form [previous transaction hash, index of the output to use]
     txnOut.addInput(transactionHash, 0);
-    txnOut.addOutput(listeningPublicAddress, totalSatoshisRecieved);
+
+    txnOut.addOutput(listeningPublicAddress, totalSatoshiToSend);
 
     return txnOut;
 }
@@ -100,10 +101,10 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
     writeToScreen('TxnOut OP_RETURN :' + opReturn);
     writeToScreen('TxnOut HEX' + txnOutHex);
 
-    $.post({
+    $.ajax({
   		type: "POST",
   		url: "https://insight.bitpay.com/api/tx/send", 
-  		data: txnOutHex,
+  		data: {"rawtx": txnOutHex},
   		success: 
     		function( data ) {
   				console.log ('Transaction submitted!', data);

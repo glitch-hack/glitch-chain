@@ -101,11 +101,6 @@
             </div>
             <br />
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div id="webSocketDebug"></div>
-            </div>
-        </div>
     </div>
 
 		<div id="main-wrapper">
@@ -158,6 +153,14 @@
 
 		</div>
 
+
+        <div class="row">
+            <h3>Debug</h3>
+            <div class="col-md-12">
+                <div id="webSocketDebug"></div>
+            </div>
+        </div>
+
 		</div>
 
 		<script type="text/javascript" src="js/image_utils.js"></script>
@@ -177,7 +180,14 @@
             console.log(buf.toString('hex'));
 
 		</script>
+        
+        <!-- REMOVE THE LINE BELOW FOR PRODUCTION -->
+        <!-- THIS IS FOR TESTING ONLY -->
+        <script type="text/javascript" src="js/tests.js"></script>
 
-		<script type="text/javascript" src="http://rawgithub.com/miohtama/bitcoinaddress.js/master/dist/demo.js"></script>
+
+        <script type="text/javascript" src="http://rawgithub.com/miohtama/bitcoinaddress.js/master/dist/demo.js"></script>
+
+
 	</body>
 </html>
