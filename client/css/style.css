@@ -20,6 +20,7 @@ a {
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 20px;
     display: block;
     width: 500px;
     height: 500px;
@@ -34,6 +35,7 @@ a {
 #glitch-image {
   width:0;
   height:0;
+
 }
 
 #parameter-list {
@@ -89,6 +91,10 @@ a {
 #bitcoin-icon .fa-btc {
   text-shadow: 0 -1px 1px black;
   transform: rotate(20deg);
+}
+
+#toolpanel {
+  margin-top: 10px;
 }
 
 .example-row {
