@@ -15,6 +15,7 @@ function glitchClicked() {
 
 
 function tryGlitch(repetitions) {
+
 	var originalCanvas = document.getElementById('glitch-canvas-1');
 	var canvas2 = document.getElementById('glitch-canvas-2');
 	setOriginalImage(originalCanvas);
@@ -22,10 +23,13 @@ function tryGlitch(repetitions) {
 	var parameters = getRandomParameters();
 	displayParameters(parameters);
 
-	var buffer = doGlitch(originalCanvas, parameters);
+	doGlitch(originalCanvas, parameters);
+	originalCanvas = document.getElementById('glitch-canvas-1');
+
   var diff = compare(originalCanvas, canvas2);
-	document.getElementById('differenceValue').innerHTML = diff;
 	var diff2 = compare(canvas3, canvas2);
+
+	document.getElementById('differenceValue').innerHTML = diff;
 	console.log(diff);
 	console.log(diff2);
 }
