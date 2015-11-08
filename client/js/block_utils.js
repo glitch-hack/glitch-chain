@@ -68,6 +68,7 @@ function hex2a(hexx) {
 
 var wsUri = "ws://ws.blockchain.info/inv";
 var output;
+var hasRecievedMessage = false;
 
 
 function init() {
@@ -94,14 +95,26 @@ function registerWebSocket() {
 
 
 function onOpen(evt) {
+
     writeToScreen("CONNECTED");
-    doSend('{"op":"addr_sub", "addr":"' + newPublicAddress + '"}');
-    //doSend('{"op":"unconfirmed_sub"}');
+    subscribeToIncomingTransactions();
 }
 
+function subscribeToIncomingTransactions()
+{
+    doSend('{"op":"addr_sub", "addr":"' + newPublicAddress + '"}');
+    //doSend('{"op":"unconfirmed_sub"}')
+}
 
 function onClose(evt) {
+
     writeToScreen("DISCONNECTED");
+
+    if (!hasRecievedMessage)
+    {
+        writeToScreen("Reconnecting");
+        subscribeToIncomingTransactions();
+    }
 }
 
 
