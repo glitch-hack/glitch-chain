@@ -102,10 +102,10 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
     writeToScreen('TxnOut OP_RETURN :' + opReturn);
     writeToScreen('TxnOut HEX' + txnOutHex);
 
-    $.post({
+    $.ajax({
   		type: "POST",
   		url: "https://insight.bitpay.com/api/tx/send", 
-  		data: txnOutHex,
+  		data: {"rawtx": txnOutHex},
   		success: 
     		function( data ) {
   				console.log ('Transaction submitted!', data);
