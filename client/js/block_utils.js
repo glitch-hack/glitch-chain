@@ -60,23 +60,6 @@ function hex2a(hexx) {
     
 
 
-// ------------------- Creating a client side temporary disposable wallet ----------------
-
-var keyPair = bitcoin.ECPair.makeRandom();
-        
-// Print your private key (in WIF format)
-var temporaryPrivateKey = keyPair.toWIF();
-
-console.log('Temporary private key ', temporaryPrivateKey);
-// => Kxr9tQED9H44gCmp6HAdmemAzU3n84H3dGkuWTKvE23JgHMW8gct
-
-// Print your public key address
-console.log('Temporary public key address ', keyPair.getAddress());
-// => 14bZ7YWde4KdRb5YN7GYkToz3EHVCvRxkF
-
-var newPublicAddress = keyPair.getAddress();
-$(".bitcoin-address-display-value").attr("data-bc-address", newPublicAddress);
-$(".bitcoin-address-display-value").html(newPublicAddress);
 
 
 
@@ -129,39 +112,12 @@ function onMessage(evt) {
     writeToScreen('<span style="color: green;"> ~~ Transaction recieved ~~ </span>');
     writeToScreen('<span style="color: green;">~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </span>');
     var txnIn = JSON.parse(evt.data);
-    var transactionHash = txnIn.x.hash;
-    console.log('TxnIn HASH :' + transactionHash);
-    var totalSatoshisRecieved = txnIn.x.out[0].value;
-    console.log('TxnIn SATOSHI :' + totalSatoshisRecieved);
-    writeToScreen('TxnIn HASH :' + transactionHash);
-    writeToScreen('TxnIn SATOSHI :' + writeToScreen);
-    writeToScreen('-------------------------------------------------------------');
-    // -------------------------------------------------------------
-    // Pass the satoshi onto our main account with OP_RETURN
-    var txnOut = new bitcoin.TransactionBuilder();
-    // Add the input (who is paying) of the form [previous transaction hash, index of the output to use]
-    txnOut.addInput(transactionHash, 0);
-    // Add the output (who to pay to) of the form [payee's address, amount in satoshis]
-    var listeningPublicAddress = "1KRAPo6pX457sKKBdiXQGuK2RV6ELvnB1x";
-    txnOut.addOutput(listeningPublicAddress, totalSatoshisRecieved);
-    console.log('TxnOut PublicAddress :' + listeningPublicAddress);
-    var opReturn = "Hello World";
-    var opReturnData = new Buffer(opReturn);
-    //txnOut.addOutput(bitcoin.script.fromChunks(bitcoin.script.opscode.OP_RETURN, opReturnData), 0);
-    txnOut.addOutput(bitcoin.script.fromASM('OP_RETURN 4141'), 0);
-    console.log('TxnOut OP_RETURN :' + opReturn);
-    console.log('Signing with privatekey : ', temporaryPrivateKey);
-    console.log('Creating ECKey from privatekey.....');
-    var ecKey = bitcoin.ECPair.fromWIF(temporaryPrivateKey);
-    console.log('Created!');
-    var signedTxn = txnOut.sign(0, ecKey);
-    console.log('TxnOut SIGNED SUCCESS');
-    var txnOutCompile = txnOut.build();
-    var txnOutHex = txnOutCompile.toHex();
-    console.log('TxnOut ToHEX :' + txnOutHex);
-    writeToScreen('TxnOut PublicAddress :' + listeningPublicAddress);
-    writeToScreen('TxnOut OP_RETURN :' + opReturn);
-    writeToScreen('TxnOut HEX' + txnOutHex);
+
+    // Validate if the payment, parameters and payout address are OK
+    validatePaymentTransaction(txnIn);
+
+    // pass the transaction down the chain
+    createAndSendHomeTransaction(txnIn);
 }
 
 
