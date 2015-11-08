@@ -36,7 +36,8 @@ function validatePaymentTransaction(txnIn) {
 // 
 function addOpReturnData(txn, data) {
     console.log("addOpReturnData", txn);
-    txn.addOutput(bitcoin.script.nullDataOutput(data), 0);
+    //txn.addOutput(bitcoin.script.fromASM("OP_RETURN 636861726c6579206c6f766573206865696469"), 0);
+    //txn.addOutput(bitcoin.script.nullDataOutput(data), 0);
     console.log("addOpReturnDataComplete", txn);
 }
 
@@ -99,14 +100,9 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
 	var iter =  parameters['iterations'];
 	var quality =  parameters['quality'];
 
-<<<<<<< HEAD
+
 	// var opReturnData_params = params2string(amount, seed, iter, quality);
     // addOpReturnData(txnOut, opReturnData_params);
-=======
-	var opReturnData_params = params2string(amount, seed, iter, quality);
-	console.log("opReturnData_params ", opReturnData_params);
-    addOpReturnData(txnOut, opReturnData_params);
->>>>>>> c413d3deee42c86a03ec1c48fe6e71d6bd65a319
 
     // sign with OUR TEMP key
     signTransaction(txnOut, temporaryPrivateKey);
