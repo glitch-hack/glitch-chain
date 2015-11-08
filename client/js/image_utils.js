@@ -6,7 +6,7 @@ var canvas1 = document.getElementById('glitch-canvas-1');
 var canvas2 = document.getElementById('glitch-canvas-2');
 var canvas3 = document.getElementById('glitch-canvas-3');
 var canvas4 = document.getElementById('glitch-canvas-4');
-
+var parameters = null;
 
 function glitchClicked() {
         tryGlitch(10);
@@ -16,7 +16,6 @@ function glitchClicked() {
 function tryGlitch(repetitions) {
     var arrayOut = [];
     var diff = null;
-    var parameters = null;
     parameters = getRandomParameters();
 		setOriginalImage(canvas1);
     doGlitch(canvas1, parameters);
