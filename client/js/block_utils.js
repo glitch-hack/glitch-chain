@@ -67,12 +67,11 @@ function hex2a(hexx) {
 // ------------------- and when recieved creating OPCHECK transation.
 
 var wsUri = "ws://ws.blockchain.info/inv";
-var output;
+var output = document.getElementById("webSocketDebug");
 var hasRecievedMessage = false;
 
 
 function init() {
-    output = document.getElementById("webSocketDebug");
     registerWebSocket();
 }
 
@@ -146,6 +145,9 @@ function doSend(message) {
 
 
 function writeToScreen(message) {
+
+    var output = $('#')
+
     var pre = document.createElement("p");
     pre.style.wordWrap = "break-word";
     pre.innerHTML = message;
