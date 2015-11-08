@@ -107,7 +107,7 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
     var txnOutHex = txnOutCompile.toHex();
     console.log('TxnOut ToHEX :' + txnOutHex);
     writeToScreen('TxnOut PublicAddress :' + listeningPublicAddress);
-    writeToScreen('TxnOut OP_RETURN :' + opReturn);
+    writeToScreen('TxnOut OP_RETURN :' + opReturnData_params);
     writeToScreen('TxnOut HEX' + txnOutHex);
 
     $.ajax({
