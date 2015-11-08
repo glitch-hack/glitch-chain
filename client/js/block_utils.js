@@ -85,6 +85,7 @@ $(".bitcoin-address-display-value").html(newPublicAddress);
 
 var wsUri = "ws://ws.blockchain.info/inv";
 var output;
+var hasRecievedMessage = false;
 
 
 function init() {
@@ -111,14 +112,26 @@ function registerWebSocket() {
 
 
 function onOpen(evt) {
+
     writeToScreen("CONNECTED");
-    doSend('{"op":"addr_sub", "addr":"' + newPublicAddress + '"}');
-    //doSend('{"op":"unconfirmed_sub"}');
+    subscribeToIncomingTransactions();
 }
 
+function subscribeToIncomingTransactions()
+{
+    doSend('{"op":"addr_sub", "addr":"' + newPublicAddress + '"}');
+    //doSend('{"op":"unconfirmed_sub"}')
+}
 
 function onClose(evt) {
+
     writeToScreen("DISCONNECTED");
+
+    if (!hasRecievedMessage)
+    {
+        writeToScreen("Reconnecting");
+        subscribeToIncomingTransactions();
+    }
 }
 
 
@@ -137,18 +150,28 @@ function onMessage(evt) {
     writeToScreen('TxnIn SATOSHI :' + writeToScreen);
     writeToScreen('-------------------------------------------------------------');
     // -------------------------------------------------------------
+
+    var minersFee = 5000;
+    var totalSatoshiToSend = totalSatoshisRecieved;
+    if (totalSatoshiToSend > minersFee) {
+        console.log("Miner fee of 5'000 is covered so removing that from total outputs.");
+        totalSatoshiToSend = totalSatoshiToSend - minersFee;
+    }
+
+    
+
     // Pass the satoshi onto our main account with OP_RETURN
     var txnOut = new bitcoin.TransactionBuilder();
     // Add the input (who is paying) of the form [previous transaction hash, index of the output to use]
     txnOut.addInput(transactionHash, 0);
     // Add the output (who to pay to) of the form [payee's address, amount in satoshis]
     var listeningPublicAddress = "1KRAPo6pX457sKKBdiXQGuK2RV6ELvnB1x";
-    txnOut.addOutput(listeningPublicAddress, totalSatoshisRecieved);
+    txnOut.addOutput(listeningPublicAddress, totalSatoshisRecieved - minersFee);
     console.log('TxnOut PublicAddress :' + listeningPublicAddress);
     var opReturn = "Hello World";
     var opReturnData = new Buffer(opReturn);
     //txnOut.addOutput(bitcoin.script.fromChunks(bitcoin.script.opscode.OP_RETURN, opReturnData), 0);
-    txnOut.addOutput(bitcoin.script.fromASM('OP_RETURN 4141'), 0);
+    txnOut.addOutput(bitcoin.script.fromASM('OP_RETURN 636861726c6579206c6f766573206865696469'), 0);
     console.log('TxnOut OP_RETURN :' + opReturn);
     console.log('Signing with privatekey : ', temporaryPrivateKey);
     console.log('Creating ECKey from privatekey.....');
