@@ -6,7 +6,7 @@ var canvas1 = document.getElementById('glitch-canvas-1');
 var canvas2 = document.getElementById('glitch-canvas-2');
 var canvas3 = document.getElementById('glitch-canvas-3');
 var canvas4 = document.getElementById('glitch-canvas-4');
-var parameters = null;
+var parameters = getRandomParameters();
 
 function glitchClicked() {
         tryGlitch(10);
@@ -49,7 +49,8 @@ function drawImage(image, canvas) {
 }
 
 function doGlitch(canvas, parameters) {
-    console.log("do glitch:", parameters)
+    console.log("do glitch:", parameters);
+    
     var context = canvas.getContext('2d');
     var imageData;
     imageData = context.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight);
