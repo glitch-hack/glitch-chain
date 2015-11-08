@@ -13,8 +13,6 @@ console.log('Temporary public key address ', keyPair.getAddress());
 // => 14bZ7YWde4KdRb5YN7GYkToz3EHVCvRxkF
 
 var newPublicAddress = keyPair.getAddress();
-$(".bitcoin-address-display-value").attr("data-bc-address", newPublicAddress);
-$(".bitcoin-address-display-value").html(newPublicAddress);
 
 
 //
