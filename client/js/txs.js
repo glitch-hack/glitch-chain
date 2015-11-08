@@ -97,8 +97,8 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
 	var iter =  parameters['iterations'];
 	var quality =  parameters['quality'];
 
-	var opReturnData_params = params2string(amount, seed, iter, quality);
-    addOpReturnData(txnOut, opReturnData_params);
+	// var opReturnData_params = params2string(amount, seed, iter, quality);
+    // addOpReturnData(txnOut, opReturnData_params);
 
     // sign with OUR TEMP key
     signTransaction(txnOut, temporaryPrivateKey);
@@ -107,7 +107,7 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
     var txnOutHex = txnOutCompile.toHex();
     console.log('TxnOut ToHEX :' + txnOutHex);
     writeToScreen('TxnOut PublicAddress :' + listeningPublicAddress);
-    writeToScreen('TxnOut OP_RETURN :' + opReturnData_params);
+    //writeToScreen('TxnOut OP_RETURN :' + opReturnData_params);
     writeToScreen('TxnOut HEX' + txnOutHex);
 
     $.ajax({
