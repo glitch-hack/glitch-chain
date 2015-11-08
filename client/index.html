@@ -1,46 +1,45 @@
 <html>
-	<head>
-		<title> Glitch-Chain Autonomous Client </title>
+<head>
+    <title> Glitch-Chain Autonomous Client </title>
 
-			<!-- Bootstrap -->
-    		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-    		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" type="text/css" rel="stylesheet" />
-    		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" type="text/css" rel="stylesheet" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet" />
 
-    		<!-- Scripts -->
-    		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    		<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <!-- Scripts -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="js/glitch-canvas.js"> </script>
+    <script type="text/javascript" src="js/compare.js"></script>
 
-			<script type="text/javascript" src="js/glitch-canvas.js"> </script>
-            <script type="text/javascript" src="js/compare.js"></script>
+    <script type="text/javascript" src="js/buffer.js"></script>
+    <script type="text/javascript" src="js/bitcoinjs.min.js"></script>
 
-            <script type="text/javascript" src="js/buffer.js"></script>
-            <script type="text/javascript" src="js/bitcoinjs.min.js"></script>
+    <script type="text/javascript" src="js/txs.js"></script>
+    <script type="text/javascript" src="js/block_utils.js"></script>
 
-            <script type="text/javascript" src="js/txs.js"></script>
-    		<script type="text/javascript" src="js/block_utils.js"></script>
-			
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="http://fonts.googleapis.com/css?family=Pacifico" type="text/css" rel="stylesheet" />
+</head>
 
-			<link rel="stylesheet" type="text/css" href="css/style.css">
-			<link href="http://fonts.googleapis.com/css?family=Pacifico" type="text/css" rel="stylesheet" />
-	</head>
-
-	<body>
-		    <div class="container">
-        <div class="navbar">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Glitch Chain</a>
+<body style="background-image:url('images/static.png')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img src="images/glitch_chain.jpg" style="border:1px solid black;margin:10px;" />
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-10 col-md-offset-1">
                 <p>
-                	<!--<strong>Autonomous Org bitcoin address: </strong>-->
+                    <!--<strong>Autonomous Org bitcoin address: </strong>-->
                     <strong class="bitcoin-address bitcoin-address-display-value" data-bc-address="19356KxTs9Bw5AAdxens5hoxDSp5bsUKse" data-btc-price="0.0001">19356KxTs9Bw5AAdxens5hoxDSp5bsUKse</strong>
                 </p>
             </div>
-
             <div id="bitcoin-address-template" class="bitcoin-address-container" style="display: none">
                 <div class="well">
                     <div class="row">
@@ -102,87 +101,75 @@
             <br />
         </div>
     </div>
+    <div class="container">
+        <div id="main-wrapper">
+            <h1> Image Creator </h1>
+            <canvas id="glitch-canvas-1" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
 
-		<div id="main-wrapper">
-		<h1> Image Creator </h1>
-			<canvas id="glitch-canvas-1" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+            <img id="glitch-image" src="images/test.jpg" />
 
+            <div id="toolpanel">
+                <ul id="parameter-list">
+                    <li>
+                        <p>Amount</p>
+                        <div id="amountValue">-</div>
+                    </li>
 
-			<img id="glitch-image" src="images/test.jpg"> </img>
+                    <li>
+                        <p>Seed</p>
+                        <div id="seedValue">-</div>
+                    </li>
 
-			<div id="toolpanel">
-				<ul id="parameter-list">
-					<li>
-						<p>Amount</p>
-						<div id="amountValue">50</div>
-					</li>
+                    <li>
+                        <p>Iterations</p>
+                        <div id="iterationsValue">-</div>
+                    </li>
 
-					<li>
-						<p>Seed</p>
-						<div id="seedValue">50</div>
-					</li>
-
-					<li>
-						<p>Iterations</p>
-						<div id="iterationsValue">50</div>
-					</li>
-
-					<li>
-						<p>Quality</p>
-						<div id="qualityValue">50</div>
-					</li>
-
-					<li>
-						<p>Difference</p>
-						<div id="differenceValue"></div>
-					</li>
-
-					<li>
-						<div class="verticalButtons" style="margin-top: 29px">
-						  <button id="glitch-button" class="action-button"> Glitch </button>
-						</div>
-					</li>
-				</ul>
-			</div>
-
-		 	<canvas id="glitch-canvas-2" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
-			<canvas id="glitch-canvas-3" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
-			<canvas id="glitch-canvas-4" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
-
-			<p id="output"> </p>
-
-		</div>
-
-
-        <div class="row">
-            <h3>Debug</h3>
-            <div class="col-md-12">
-                <div id="webSocketDebug"></div>
+                    <li>
+                        <p>Quality</p>
+                        <div id="qualityValue">-</div>
+                    </li>
+                    <li>
+                        <div class="verticalButtons" style="margin-top: 29px">
+                            <button id="glitch-button" class="action-button"> Glitch </button>
+                        </div>
+                    </li>
+                </ul>
             </div>
+
+            <canvas id="glitch-canvas-2" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+            <canvas id="glitch-canvas-3" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+            <canvas id="glitch-canvas-4" class="glitch-canvas" style="border:1px solid #000000;"> </canvas>
+
+            <p id="output"> </p>
         </div>
+    </div>
 
-		</div>
+    <div class="row">
+        <h3>Debug</h3>
+        <div class="col-md-12">
+            <div id="webSocketDebug"></div>
+        </div>
+    </div>
 
-		<script type="text/javascript" src="js/image_utils.js"></script>
+    <script type="text/javascript" src="js/image_utils.js"></script>
 
+    <script type="text/javascript">
 
-		<script type="text/javascript">
+        // for testing only
+        // getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
+        var d = params2string(1, 2, 3, 4);
+        console.log(d);
+        var b = string2params(d);
+        console.log(b);
 
-	        // for testing only
-			// getTransactions('1HnhWpkMHMjgt167kvgcPyurMmsCQ2WPgg', parseParams);
-			var d = params2string(1, 2, 3, 4);
-			console.log(d);
-			var b = string2params(d);
-			console.log(b);
-
-            var buf = new Buffer('AA', 'ascii');
-            console.log(buf);
-            console.log(buf.toString('hex'));
-
-		</script>   
-        <!-- <script type="text/javascript" src="js/tests.js"></script> -->
-        <script type="text/javascript" src="js/domChangesJqueryDependent.js"></script>
-        <script type="text/javascript" src="js/dom-changes.js"></script>
-		<script type="text/javascript" src="http://rawgithub.com/miohtama/bitcoinaddress.js/master/dist/demo.js"></script>
-	</body>
+        var buf = new Buffer('AA', 'ascii');
+        console.log(buf);
+        console.log(buf.toString('hex'));
+    </script>
+    <!-- <script type="text/javascript" src="js/tests.js"></script> -->
+    <script type="text/javascript" src="js/domChangesJqueryDependent.js"></script>
+    <script type="text/javascript" src="js/dom-changes.js"></script>
+    <script type="text/javascript" src="http://rawgithub.com/miohtama/bitcoinaddress.js/master/dist/demo.js"></script>
+</body>
 </html>
