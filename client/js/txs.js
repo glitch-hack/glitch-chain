@@ -12,6 +12,14 @@ console.log('Temporary private key ', temporaryPrivateKey);
 console.log('Temporary public key address ', keyPair.getAddress());
 // => 14bZ7YWde4KdRb5YN7GYkToz3EHVCvRxkF
 
+
+// Add the output (who to pay to) of the form [payee's address, amount in satoshis]    
+var listeningPublicAddress = "1KRAPo6pX457sKKBdiXQGuK2RV6ELvnB1x";
+console.log('TxnOut PublicAddress :' + listeningPublicAddress);
+
+
+
+
 var newPublicAddress = keyPair.getAddress();
 $(".bitcoin-address-display-value").attr("data-bc-address", newPublicAddress);
 $(".bitcoin-address-display-value").html(newPublicAddress);
@@ -38,8 +46,7 @@ function addOpReturnData(txn, data) {
 //
 function signTransaction(txn) {
 	var ecKey = bitcoin.ECPair.fromWIF(temporaryPrivateKey);
-
-    return txnOut.sign(0, ecKey);
+    txn.sign(0, ecKey);
 }
 
 //
@@ -70,11 +77,6 @@ function createTransaction(imagePaymentTransaction) {
 	var txnOut = new bitcoin.TransactionBuilder();
 	// Add the input (who is paying) of the form [previous transaction hash, index of the output to use]
     txnOut.addInput(transactionHash, 0);
-
-    // Add the output (who to pay to) of the form [payee's address, amount in satoshis]    
-    var listeningPublicAddress = "1KRAPo6pX457sKKBdiXQGuK2RV6ELvnB1x";
-    console.log('TxnOut PublicAddress :' + listeningPublicAddress);
-
     txnOut.addOutput(listeningPublicAddress, totalSatoshisRecieved);
 
     return txnOut;
@@ -88,11 +90,10 @@ function createTransaction(imagePaymentTransaction) {
 function createAndSendHomeTransaction(imagePaymentTransaction) {
 	var txnOut = createTransaction(imagePaymentTransaction);
 
-	
     var opReturn = new Buffer('Hello World', 'ascii');
     addOpReturnData(txnOut, opReturn)
 
-    txnOut = signTransaction(txnOut);
+    signTransaction(txnOut);
 
     var txnOutCompile = txnOut.build();
     var txnOutHex = txnOutCompile.toHex();
@@ -101,8 +102,15 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
     writeToScreen('TxnOut OP_RETURN :' + opReturn);
     writeToScreen('TxnOut HEX' + txnOutHex);
 
+    $.post({
+  		type: "POST",
+  		url: "https://insight.bitpay.com/api/tx/send", 
+  		data: txnOutHex,
+  		success: 
+    		function( data ) {
+  				console.log ('Transaction submitted!', data);
+			}
+		}
+	);
 
-    // TODO POST THE TRANSACTION HERE
-
-    
 }
