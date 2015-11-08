@@ -7,9 +7,29 @@ var canvas2 = document.getElementById('glitch-canvas-2');
 var canvas3 = document.getElementById('glitch-canvas-3');
 var canvas4 = document.getElementById('glitch-canvas-4');
 var parameters = getRandomParameters();
+var parametersList;
 
-function glitchClicked() {
-        tryGlitch(10);
+function glitchClicked()
+{
+
+	setOriginalImage(canvas1);
+
+	// Apply all previous glitches in order
+	function nextParameters(index, max){
+		if(index <= max)
+			setTimeout(function(){
+				var parameters = parametersList[index];
+				doGlitch(canvas1, parameters);
+				nextParameters(index + 1, max);
+			},50);
+	}
+	nextParameters(0, parametersList.length - 1);
+
+	setTimeout(function(){
+		var newParams = getRandomParameters();
+		doGlitch(canvas1, newParams);
+		displayParameters(newParams);
+	}, 300);
 }
 
 
@@ -50,7 +70,7 @@ function drawImage(image, canvas) {
 
 function doGlitch(canvas, parameters) {
     console.log("do glitch:", parameters);
-    
+
     var context = canvas.getContext('2d');
     var imageData;
     imageData = context.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight);
@@ -91,7 +111,7 @@ function initImageGlitching() {
     glitchButton.addEventListener('click', glitchClicked);
 
 		var canvasList = getCanvasList();
-		var parametersList = getDummyParams(4);
+		parametersList = getDummyParams(4);
 
 		loadGlitches(parametersList, canvasList);
 };
