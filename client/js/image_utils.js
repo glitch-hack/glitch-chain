@@ -51,7 +51,7 @@ function printDifference(value){
 
 
 function getRandomParameters(){
-    var amountValue = Math.floor((Math.random() * 3) + 1);
+    var amountValue = Math.floor((Math.random() * 10) + 1);
     var seedValue = Math.floor((Math.random() * 100) + 1);
     var iterationsValue = Math.floor((Math.random() * 3) + 1);
     var qualityValue = Math.floor((Math.random() * 100) + 1);
