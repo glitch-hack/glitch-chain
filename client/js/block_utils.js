@@ -146,12 +146,7 @@ function doSend(message) {
 
 function writeToScreen(message) {
 
-    var output = $('#')
-
-    var pre = document.createElement("p");
-    pre.style.wordWrap = "break-word";
-    pre.innerHTML = message;
-    output.appendChild(pre);
+    console.log(message);
 }
 
 
