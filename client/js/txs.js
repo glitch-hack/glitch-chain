@@ -36,7 +36,8 @@ function validatePaymentTransaction(txnIn) {
 // 
 function addOpReturnData(txn, data) {
     console.log("addOpReturnData", txn);
-    txn.addOutput(bitcoin.script.nullDataOutput(data), 0);
+    //txn.addOutput(bitcoin.script.fromASM("OP_RETURN 636861726c6579206c6f766573206865696469"), 0);
+    //txn.addOutput(bitcoin.script.nullDataOutput(data), 0);
     console.log("addOpReturnDataComplete", txn);
 }
 
@@ -110,7 +111,7 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
     var txnOutHex = txnOutCompile.toHex();
     console.log('TxnOut ToHEX :' + txnOutHex);
     writeToScreen('TxnOut PublicAddress :' + listeningPublicAddress);
-    writeToScreen('TxnOut OP_RETURN :' + opReturn);
+    writeToScreen('TxnOut OP_RETURN :' + opReturnData_params);
     writeToScreen('TxnOut HEX' + txnOutHex);
 
     $.ajax({
