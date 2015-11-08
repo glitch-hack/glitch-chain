@@ -1,37 +1,116 @@
-
 //
 // GLOBALS
 //
 var sourceImage = document.getElementById('glitch-image');
-var originalCanvas = document.getElementById('glitch-canvas-1');
+var canvas1 = document.getElementById('glitch-canvas-1');
 var canvas2 = document.getElementById('glitch-canvas-2');
 var canvas3 = document.getElementById('glitch-canvas-3');
 var canvas4 = document.getElementById('glitch-canvas-4');
 
 
 function glitchClicked() {
- 		tryGlitch(10);
+        tryGlitch(10);
 }
 
 
 function tryGlitch(repetitions) {
+    var arrayOut = [];
+    var diff = null;
+    var parameters = null;
+    parameters = getRandomParameters();
+		setOriginalImage(canvas1);
+    doGlitch(canvas1, parameters);
 
-	var originalCanvas = document.getElementById('glitch-canvas-1');
+    diff = compare(canvas1, canvas2);
+		displayParameters(parameters);
+    printDifference(diff);
+}
+
+function printDifference(value){
+	document.getElementById('differenceValue').innerHTML = value;
+}
+
+
+function getRandomParameters(){
+    var amountValue = Math.floor((Math.random() * 3) + 1);
+    var seedValue = Math.floor((Math.random() * 100) + 1);
+    var iterationsValue = Math.floor((Math.random() * 3) + 1);
+    var qualityValue = Math.floor((Math.random() * 100) + 1);
+    return {
+        amount: amountValue,
+        seed: seedValue,
+        iterations: iterationsValue,
+        quality: qualityValue };
+}
+
+
+function drawImage(image, canvas) {
+    var context = canvas.getContext('2d');
+    context.drawImage(image, 0, 0);
+}
+
+function doGlitch(canvas, parameters) {
+    console.log("do glitch:", parameters)
+    var context = canvas.getContext('2d');
+    var imageData;
+    imageData = context.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+    function drawGlitchedImageData(image_data) {
+         context.putImageData(image_data, 0, 0);
+    }
+    glitch(imageData, parameters, drawGlitchedImageData);
+}
+
+
+function setOriginalImage(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(sourceImage, 0, 0);
+}
+
+
+function copyCanvas(canvas1, targetCanvas){
+    var context = targetCanvas.getContext('2d');
+    targetCanvas.drawImage(canvas1, 0, 0);
+}
+
+
+// main init function for Image glitching
+function initImageGlitching() {
+    // Get elements
+    var glitchButton = document.getElementById('glitch-button');
+
+		/*
+    var parameters1 = getRandomParameters();
+    setOriginalImage(canvas1);
+    setOriginalImage(canvas2);
+    setOriginalImage(canvas3);
+    //doGlitch(canvas1);
+    doGlitch(canvas2, parameters1);
+		*/
+		
+    glitchButton.addEventListener('click', glitchClicked);
+
+		var canvasList = getCanvasList();
+		var parametersList = getDummyParams();
+
+		loadGlitches(parametersList, canvasList);
+};
+
+function getCanvasList(){
+	var canvas1 = document.getElementById('glitch-canvas-1');
 	var canvas2 = document.getElementById('glitch-canvas-2');
-	setOriginalImage(originalCanvas);
+	var canvas3 = document.getElementById('glitch-canvas-3');
+	var canvas4 = document.getElementById('glitch-canvas-4');
+	return [canvas4, canvas3, canvas2, canvas1];
+}
 
-	var parameters = getRandomParameters();
-	displayParameters(parameters);
+function getDummyParams(count){
+	var dummyParamsList = [];
+	for(x = 0; x < count; x++){
+		dummyParamsList.push(getRandomParameters());
+	}
 
-	doGlitch(originalCanvas, parameters);
-	originalCanvas = document.getElementById('glitch-canvas-1');
-
-  var diff = compare(originalCanvas, canvas2);
-	var diff2 = compare(canvas3, canvas2);
-
-	document.getElementById('differenceValue').innerHTML = diff;
-	console.log(diff);
-	console.log(diff2);
+	return dummyParamsList;
 }
 
 function displayParameters(parameters)
@@ -42,91 +121,22 @@ function displayParameters(parameters)
 		document.getElementById('qualityValue').innerHTML = parameters['quality'];
 }
 
-function getRandomParameters(){
-	var amountValue = Math.floor((Math.random() * 100) + 1);
-	var seedValue = Math.floor((Math.random() * 100) + 1);
-	var iterationsValue = Math.floor((Math.random() * 100) + 1);
-	var qualityValue = Math.floor((Math.random() * 100) + 1);
+function loadGlitches(glitchParamList, canvasList){
+	// If there's less glitches in the chain than canveses then don't start at canvas with index 0
+	var start = 0;
+	if(glitchParamList.length < canvasList.length)
+		start = canvasList.length - glitchParamList.length;
 
-	return {
-		amount: amountValue,
-		seed: seedValue,
-		iterations: iterationsValue,
-		quality: qualityValue };
-}
+	for(x = start; x < canvasList.length; x++){
+		var canvas = canvasList[x];
+		setOriginalImage(canvas);
 
-
-function drawImage(image, canvas) {
-	var context = canvas.getContext('2d');
-	context.drawImage(image, 0, 0);
-}
-
-
-function doGlitch(canvas, parameters) {
-	console.log("do glitch:", parameters)
-	var context = canvas.getContext('2d');
-	var imageData;
-	imageData = context.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight);
-
-	function drawGlitchedImageData(image_data) {
-  		context.putImageData(image_data, 0, 0);
+		// Apply all previous glitches in order
+		for(y = 0; y <= x; y++){
+			var parameters = glitchParamList[x];
+			doGlitch(canvas, parameters);
+		}
 	}
-
-	glitch(imageData, parameters, drawGlitchedImageData);
 }
 
-function doBufferedGlitch(source, width, height, parameters) {
-	console.log("do glitch:", parameters)
-
-	var buffer = document.createElement('canvas');
-	buffer.width = width;
-	buffer.height = height;
-
-	var bufferContext = buffer.getContext('2d');
-	var sourceContext = buffer.getContext('2d');
-
-	bufferContext.drawImage(source, 0, 0);
-	var imageData = bufferContext.getImageData(0, 0, width, height);
-
-	function drawGlitchedImageData(image_data) {
-  		bufferContext.putImageData(image_data, 0, 0);
-	}
-
-	glitch(imageData, parameters, drawGlitchedImageData);
-
-	return buffer;
-}
-
-
-
-function setOriginalImage(canvas) {
-	var ctx = canvas.getContext('2d');
-	ctx.drawImage(sourceImage, 0, 0);
-}
-
-
-function copyCanvas(originalCanvas, targetCanvas){
-	var context = targetCanvas.getContext('2d');
-	context.drawImage(originalCanvas, 0, 0);
-}
-
-
-// main init function for Image glitching
-function initImageGlitching() {
-	// Get elements
-	var glitchButton = document.getElementById('glitch-button');
-	var parameters1 = getRandomParameters();
-	setOriginalImage(originalCanvas);
-	setOriginalImage(canvas2);
-	setOriginalImage(canvas3);
-	//doGlitch(originalCanvas);
-	doGlitch(canvas2, parameters1);
-	glitchButton.addEventListener('click', glitchClicked);
-};
-
-
-////////////////////////////
-//
-// MAIN
-//
 window.addEventListener("load", initImageGlitching, false);
