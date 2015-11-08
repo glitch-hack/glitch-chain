@@ -42,8 +42,8 @@ function addOpReturnData(txn, data) {
 //
 //
 //
-function signTransaction(txn) {
-	var ecKey = bitcoin.ECPair.fromWIF(temporaryPrivateKey);
+function signTransaction(txn, privateKey) {
+	var ecKey = bitcoin.ECPair.fromWIF(privateKey);
     txn.sign(0, ecKey);
 }
 
@@ -89,10 +89,17 @@ function createTransaction(imagePaymentTransaction) {
 function createAndSendHomeTransaction(imagePaymentTransaction) {
 	var txnOut = createTransaction(imagePaymentTransaction);
 
-    var opReturn = new Buffer('Hello World', 'ascii');
-    addOpReturnData(txnOut, opReturn)
+	// prepare parameters to be included into OP_RETURN
+	var amount = parameters['amount'];
+	var seed = parameters['seed'];
+	var iter =  parameters['iterations'];
+	var quality =  parameters['quality'];
 
-    signTransaction(txnOut);
+	var opReturnData_params = params2string(amount, seed, iter, quality);
+    addOpReturnData(txnOut, opReturnData_params);
+
+    // sign with OUR TEMP key
+    signTransaction(txnOut, temporaryPrivateKey);
 
     var txnOutCompile = txnOut.build();
     var txnOutHex = txnOutCompile.toHex();
