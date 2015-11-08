@@ -5,13 +5,13 @@
 //
 function params2string(a, b, c, d) {
     var s = a + ' ' + b + ' ' + c + ' ' + d;    
-    s = bin2hex(s);
+    // s = bin2hex(s);
     return s;
 }
 
 function string2params(input) {
-    var s = hex2bin(input);
-    var buf = s.split(' ');    
+    //var s = hex2bin(input);
+    var buf = input.split(' ');    
     var intBuf = [];
     buf.forEach(function (s) { intBuf.push(parseInt(s)); });
     return intBuf;
