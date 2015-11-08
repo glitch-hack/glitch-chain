@@ -25,13 +25,11 @@ var tolerance = { // between 0 and 255
 			return false;
 		}
 	}
-	function isRGBSimilar(d1, d2){
-		var red = isColorSimilar(d1.r,d2.r,'red');
-		var green = isColorSimilar(d1.g,d2.g,'green');
-		var blue = isColorSimilar(d1.b,d2.b,'blue');
-		var alpha = isColorSimilar(d1.a, d2.a, 'alpha');
-
-		return red && green && blue && alpha;
+	function abs(d1, d2){
+		return Math.abs(d1-d2)
+	}
+	function square(d1, d2){
+		return Math.square(d1-d2)
 	}
 
 	function loop(x, y, callback){
@@ -74,7 +72,9 @@ var tolerance = { // between 0 and 255
 		var data1 = img1.data;
 		var data2 = img2.data;
 		var mismatchCount = 0;
-
+		var red = 0;
+		var green = 0;
+		var blue = 0;
 		loop(img1.height, img1.width, function(verticalPos, horizontalPos){
 
 
@@ -86,13 +86,12 @@ var tolerance = { // between 0 and 255
 				return;
 			}
 
-			if( ! isRGBSimilar(pixel1, pixel2) ){
-				mismatchCount++;
-			}
-
+			red +=  abs(pixel1.r, pixel2.r)
+			green +=  abs(pixel1.g, pixel2.g)
+			blue +=  abs(pixel1.b, pixel2.b)
 		});
 
-		return (mismatchCount / (img1.height*img1.width) * 100).toFixed(2);
+		return red+green+blue
 	}
 
 	function compare(cv1, cv2){
@@ -101,5 +100,3 @@ var tolerance = { // between 0 and 255
 		var img2 = cv2.getContext('2d').getImageData(0, 0, cv2.width, cv2.height)
 		return analyseImages(img1,img2);
 	}
-
-	

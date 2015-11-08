@@ -20,15 +20,25 @@
 			var diff = null;
 			var parameters = null;
 
+			parameters = getRandomParameters();
+			doGlitch(originalCanvas, parameters);
+			diff = compare(originalCanvas, canvas2);
+			alert(diff);
+
+			parameters = getRandomParameters();
+			doGlitch(originalCanvas, parameters);
+			diff = compare(originalCanvas, canvas2);
+			alert(diff);
+
+			/*
 			for(x = 0; x < repetitions; x++)
 			{
-				parameters = getRandomParameters();
-				doGlitch(originalCanvas, parameters);
-			  diff = compare(originalCanvas, canvas2);
+
 				arrayOut.push(diff);
-				alert(diff);
+
 			}
-			console.log(arrayOut);
+			*/
+			//rgconsole.log(arrayOut);
 		}
 
 
@@ -54,9 +64,9 @@
 			console.log("do glitch:", parameters)
 			var context = canvas.getContext('2d');
 
-			var imageData; 			
+			var imageData;
 			imageData = context.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight);
-			
+
 
 			function drawGlitchedImageData(image_data) {
 		  	context.putImageData(image_data, 0, 0);
@@ -65,7 +75,7 @@
 			glitch(imageData, parameters, drawGlitchedImageData);
 		}
 
-		function setOriginalImage(canvas) {			
+		function setOriginalImage(canvas) {
 			var ctx = canvas.getContext('2d');
 			ctx.drawImage(sourceImage, 0, 0);
 		}
@@ -81,7 +91,7 @@
 		// testing Image glitching
 		window.addEventListener("load", function() {
 
-			// Get elements 			
+			// Get elements
 			var glitchButton = document.getElementById('glitch-button');
 			var parameters1 = getRandomParameters();
 
@@ -95,4 +105,3 @@
 
 			 glitchButton.addEventListener('click', glitchClicked);
 		});
-
