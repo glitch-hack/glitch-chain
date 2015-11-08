@@ -87,11 +87,11 @@ function initImageGlitching() {
     //doGlitch(canvas1);
     doGlitch(canvas2, parameters1);
 		*/
-		
+
     glitchButton.addEventListener('click', glitchClicked);
 
 		var canvasList = getCanvasList();
-		var parametersList = getDummyParams();
+		var parametersList = getDummyParams(4);
 
 		loadGlitches(parametersList, canvasList);
 };
@@ -123,20 +123,36 @@ function displayParameters(parameters)
 
 function loadGlitches(glitchParamList, canvasList){
 	// If there's less glitches in the chain than canveses then don't start at canvas with index 0
-	var start = 0;
+	var max = canvasList.length - 1;
 	if(glitchParamList.length < canvasList.length)
-		start = canvasList.length - glitchParamList.length;
+		max = glitchParamList.length;
 
-	for(x = start; x < canvasList.length; x++){
-		var canvas = canvasList[x];
-		setOriginalImage(canvas);
+		function nextCanvas(canvasIndex){
+			if (canvasIndex > 0)	{
+				setTimeout(function(){
+					var canvas = canvasList[canvasIndex];
+					setOriginalImage(canvas);
 
-		// Apply all previous glitches in order
-		for(y = 0; y <= x; y++){
-			var parameters = glitchParamList[x];
-			doGlitch(canvas, parameters);
+					// Apply all previous glitches in order
+					function nextParameters(index, max){
+						if(index <= max)
+							setTimeout(function(){
+								var parameters = glitchParamList[index];
+								console.log("Glitching canvas", canvasIndex);
+								console.log("Glitch index: " + index);
+								doGlitch(canvas, parameters);
+								nextParameters(index + 1, max);
+							},50);
+					}
+					nextParameters(0, canvasIndex-1);
+					nextCanvas(canvasIndex-1);
+				}, 300);
+			}
 		}
+
+		nextCanvas(max);
+
+		setOriginalImage(canvasList[0]);
 	}
-}
 
 window.addEventListener("load", initImageGlitching, false);

@@ -35,9 +35,9 @@ function validatePaymentTransaction(txnIn) {
 //
 // 
 function addOpReturnData(txn, data) {
-	console.log("Just before adding OP_RETURN");
-	console.log(txn);
-	txn.addOutput(bitcoin.script.nullDataOutput(data), 0);
+    console.log("addOpReturnData", txn);
+    txn.addOutput(bitcoin.script.nullDataOutput(data), 0);
+    console.log("addOpReturnDataComplete", txn);
 }
 
 
@@ -71,12 +71,12 @@ function createTransaction(imagePaymentTransaction) {
     var totalSatoshiToSend = totalSatoshisRecieved;
     if (totalSatoshiToSend > minersFee) {
         console.log("Miner fee of 5'000 is covered so removing that from total outputs.");
-        totalSatoshiToSend = totalSatoshiToSend - minersFee;
+        //totalSatoshiToSend = totalSatoshiToSend - minersFee;
     }
 
 	var txnOut = new bitcoin.TransactionBuilder();
 	// Add the input (who is paying) of the form [previous transaction hash, index of the output to use]
-    txnOut.addInput(transactionHash, 0);
+	txnOut.addInput(transactionHash, 0);
 
     txnOut.addOutput(listeningPublicAddress, totalSatoshiToSend);
 
@@ -89,6 +89,8 @@ function createTransaction(imagePaymentTransaction) {
 //
 //
 function createAndSendHomeTransaction(imagePaymentTransaction) {
+
+    console.log("createAndSendHomeTransaction");
 	var txnOut = createTransaction(imagePaymentTransaction);
 
 	// prepare parameters to be included into OP_RETURN
@@ -97,8 +99,14 @@ function createAndSendHomeTransaction(imagePaymentTransaction) {
 	var iter =  parameters['iterations'];
 	var quality =  parameters['quality'];
 
+<<<<<<< HEAD
 	// var opReturnData_params = params2string(amount, seed, iter, quality);
     // addOpReturnData(txnOut, opReturnData_params);
+=======
+	var opReturnData_params = params2string(amount, seed, iter, quality);
+	console.log("opReturnData_params ", opReturnData_params);
+    addOpReturnData(txnOut, opReturnData_params);
+>>>>>>> c413d3deee42c86a03ec1c48fe6e71d6bd65a319
 
     // sign with OUR TEMP key
     signTransaction(txnOut, temporaryPrivateKey);
