@@ -1,14 +1,59 @@
-// global namespace
-function BitCoinTransactionListener(fnOnMessage, debugWindow) {
+
+
+// ~~~~~~~~~~~~~~~~ Simple usage
+//
+//      var myDebugWindow = new DebugWindow('idOfMyDebugWindowDiv');
+//
+//      var BitCoinTransactionListener = new BitCoinTransactionListener(
+//        (function(evt){
+//            this.Subscribe();
+//        }),
+//        (function(evt){
+//            myDebugWindow.WriteLine("onRecieveMessage recieved evt : ", JSON.stringify(evt.data));
+//        }),
+//        myDebugWindow
+//      ).Connect();
+//
+//
+// ~~~~~~~~~~~~~~~~ Verbose usage
+//
+//      var myDebugWindow = new DebugWindow('myDebugWindow');
+//      myDebugWindow.WriteLine('hello');
+//
+//      var onOpen = function(evt)
+//      {
+//          myDebugWindow.WriteLine("onOpen recieved");
+//          myBitCoinTransactionListener.Subscribe();
+//      }
+//
+//      var onRecieveMessage = function(evt)
+//      {
+//          myDebugWindow.WriteLine("onRecieveMessage recieved evt : ", JSON.stringify(evt.data));
+//      }
+//
+//      var myBitCoinTransactionListener = new BitCoinTransactionListener(
+//          onOpen,
+//          onRecieveMessage,
+//          myDebugWindow
+//      );
+//
+//      myBitCoinTransactionListener.Connect();
+//
+// ~~~~~~~~~~~~~~~~ 
+
+function BitCoinTransactionListener(fnOnOpen, fnOnMessage, debugWindow) {
 
     this.wsUri = "ws://ws.blockchain.info/inv";
     this.FnOnMessage = fnOnMessage;
+    this.FnOnOpen = fnOnOpen;
     this.DebugWindow = debugWindow;
 
 
     this.hasRecievedMessage = false;
     this.isConnected = false;
     this.webSocket;
+
+    _this = this;
 }
 
 BitCoinTransactionListener.prototype = {
@@ -26,7 +71,10 @@ BitCoinTransactionListener.prototype = {
         }
     },
     Connect: function () {
+
         this.Debug("Connect");
+
+        _this = this;
 
         if (this.isConnected) {
             Debug("! Trying to connect but already connected.");
@@ -36,19 +84,19 @@ BitCoinTransactionListener.prototype = {
         this.webSocket = new WebSocket(this.wsUri);
 
         this.webSocket.onopen = function (evt) {
-            this.onOpen(evt)
+            _this.onOpen(evt)
         };
 
         this.webSocket.onclose = function (evt) {
-            this.onClose(evt)
+            _this.onClose(evt)
         };
 
         this.webSocket.onmessage = function (evt) {
-            this.onMessage(evt)
+            _this.onMessage(evt)
         };
 
         this.webSocket.onerror = function (evt) {
-            this.onError(evt)
+            _this.onError(evt)
         };
     },
     Subscribe: function (address) {
@@ -75,18 +123,23 @@ BitCoinTransactionListener.prototype = {
         }
 
         this.Debug("Sending : ", message);
-        this.websocket.send(message);
+        this.webSocket.send(message);
     },
     onOpen: function (evt) {
+        this.isConnected = true;
         this.Debug("onOpen received : ", evt);
+        this.Debug("Calling fnOnOpen()");
+        this.FnOnOpen(evt);
     },
     onClose: function (evt) {
+        this.isConnected = false;
         this.Debug("onClose recieved : ", evt);
     },
     onMessage: function (evt) {
-        this.Debug("onMessage recieved : ", evt);
+        this.hasRecievedMessage = true;
+        this.Debug("onMessage recieved : ", evt.data);
         this.Debug("Calling fnOnMessage()");
-        this.fnOnMessage(evt);
+        this.FnOnMessage(evt);
     },
     onError: function (evt) {
         this.Debug("onError recieved : ", evt);

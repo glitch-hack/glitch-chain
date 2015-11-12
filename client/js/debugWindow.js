@@ -25,18 +25,22 @@ function DebugWindow(domDivId_debugMessagesOutputDiv) {
 
 DebugWindow.prototype = {
     constructor: DebugWindow,
-    WriteLine: function(message) {
+    WriteLine: function() {
 
-        console.log(message);
+      var args = [];
+      for (var i = 0; i < arguments.length; ++i)
+        args[i] = arguments[i];
 
-        //if(!this.domDivId_debugMessagesOutputDiv === 'undefined')
+        console.log(args);
+
+        if(!(this.domDivId_debugMessagesOutputDiv === 'undefined'))
         {
             try {
                 var newRow = document.getElementById(this.domDivId_debugMessagesOutputDiv).appendChild(
                     document.createElement("div"));
 
                 newRow.className = this.GetRowCssClassString();
-                    
+
                 var firstColumn = newRow.appendChild(
                     document.createElement("div"));
 
@@ -46,7 +50,9 @@ DebugWindow.prototype = {
                 var secondColumn = newRow.appendChild(
                     document.createElement("div"));
                 secondColumn.className = this.GetLastColumnCssClassString();
-                secondColumn.appendChild(document.createTextNode(message));
+
+                for (var i = 0; i < args.length; ++i)
+                  secondColumn.appendChild(document.createTextNode(args[i]));
             }
             catch (err) {
                 console.log('Error creating dom :', err);

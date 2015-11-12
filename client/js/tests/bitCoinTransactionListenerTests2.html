@@ -20,23 +20,16 @@
     var myDebugWindow = new DebugWindow('myDebugWindow');
     myDebugWindow.WriteLine('hello');
 
-    var onOpen = function(evt)
-    {
-        myDebugWindow.WriteLine("onOpen recieved");
-        myBitCoinTransactionListener.Subscribe();
-    }
-
-    var onRecieveMessage = function(evt)
-    {
-        myDebugWindow.WriteLine("onRecieveMessage recieved evt : ", JSON.stringify(evt.data));
-    }
-
-    var myBitCoinTransactionListener = new BitCoinTransactionListener(
-        onOpen,
-        onRecieveMessage,
-        myDebugWindow);
-
-    myBitCoinTransactionListener.Connect();
+    var BitCoinTransactionListener = new BitCoinTransactionListener(
+        (function(evt)
+        {
+            this.Subscribe();
+        }),
+        (function(evt){
+            myDebugWindow.WriteLine("onRecieveMessage recieved evt : ", JSON.stringify(evt.data));
+        }),
+        myDebugWindow
+    ).Connect();
 
     </script>
 </body>
