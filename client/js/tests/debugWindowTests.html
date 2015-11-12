@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <script src="../debugWindow.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="myDebugWindow1"></div>
+        <div id="myDebugWindow2"></div>
+    </body>
+    <script type="text/javascript">
+            var myDebugWindow1 = new DebugWindow('myDebugWindow1');
+            myDebugWindow1.WriteLine('hello');
+
+            var myDebugWindow2 = new DebugWindow('myDebugWindow1');
+            myDebugWindow2.AddRowCssClass('row');
+            myDebugWindow2.AddFirstColumnCssClass('col-md-2');
+            myDebugWindow2.AddSecondColumnCssClass('col-md-10');
+            myDebugWindow2.WriteLine('hello');
+    </script>
+</html>
