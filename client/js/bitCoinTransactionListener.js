@@ -39,7 +39,7 @@
 //
 //      myBitCoinTransactionListener.Connect();
 //
-// ~~~~~~~~~~~~~~~~ 
+// ~~~~~~~~~~~~~~~~
 
 function BitCoinTransactionListener(fnOnOpen, fnOnMessage, debugWindow) {
 
