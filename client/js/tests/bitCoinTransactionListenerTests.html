@@ -1,0 +1,37 @@
+<html>
+<head>
+    <!-- Bootstrap -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" type="text/css" rel="stylesheet" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <script src="../debugWindow.js" type="text/javascript"></script>
+    <script src="../bitCoinTransactionListener.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <div id="myDebugWindow"></div>
+    <script type="text/javascript">
+
+    var myDebugWindow = new DebugWindow('myDebugWindow');
+    myDebugWindow.WriteLine('hello');
+
+    var onRecieveMessage = function(evt)
+    {
+        myDebugWindow.WriteLine("onRecieveMessage recieved evt : ", evt);
+    }
+
+    var myBitCoinTransactionListener = new BitCoinTransactionListener(
+        onRecieveMessage,
+        myDebugWindow);
+
+    myBitCoinTransactionListener.Connect();
+    myBitCoinTransactionListener.Subscribe();
+
+    </script>
+</body>
+</html>

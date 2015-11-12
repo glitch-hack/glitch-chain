@@ -1,112 +1,94 @@
-
 // global namespace
-var BitCoinTransactionListener = new function(bool_isTestNet, domDivId_debugMessagesOutputDiv)
-{
-    this.isTestNet = bool_isTestNet;
-
+function BitCoinTransactionListener(fnOnMessage, debugWindow) {
 
     this.wsUri = "ws://ws.blockchain.info/inv";
-    this.output = document.getElementById("webSocketDebug");
+    this.FnOnMessage = fnOnMessage;
+    this.DebugWindow = debugWindow;
+
+
     this.hasRecievedMessage = false;
-
-    
-
-
-
-
-
-
-    if (bool_isTestNet) {
-        throw "Unsupported as ";
-    }
-
-    
-
-    
-
-
-    function init() {
-        registerWebSocket();
-    }
-
-
-    function registerWebSocket() {
-        websocket = new WebSocket(wsUri);
-        websocket.onopen = function (evt) {
-            onOpen(evt)
-        };
-        websocket.onclose = function (evt) {
-            onClose(evt)
-        };
-        websocket.onmessage = function (evt) {
-            onMessage(evt)
-        };
-        websocket.onerror = function (evt) {
-            onError(evt)
-        };
-    }
-
-
-    function onOpen(evt) {
-
-        writeToScreen("CONNECTED");
-        subscribeToIncomingTransactions();
-    }
-
-    function subscribeToIncomingTransactions() {
-        doSend('{"op":"addr_sub", "addr":"' + newPublicAddress + '"}');
-        //doSend('{"op":"unconfirmed_sub"}')
-    }
-
-    function onClose(evt) {
-
-        writeToScreen("DISCONNECTED");
-
-        if (!hasRecievedMessage) {
-            writeToScreen("Reconnecting");
-            subscribeToIncomingTransactions();
-        }
-    }
-
-
-    function onMessage(evt) {
-        // -------------------------------------------------------------
-        // Get the data of the unconfirmed transaction
-        websocket.close(); // dont need any more messages
-        writeToScreen('<span style="color: green;"> ~~ Transaction recieved ~~ </span>');
-        writeToScreen('<span style="color: green;">~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </span>');
-        var txnIn = JSON.parse(evt.data);
-
-        // Validate if the payment, parameters and payout address are OK
-        validatePaymentTransaction(txnIn);
-
-        // pass the transaction down the chain
-        createAndSendHomeTransaction(txnIn);
-    }
-
-
-    function onError(evt) {
-        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-    }
-
-
-    function doSend(message) {
-        writeToScreen("SENT: " + message);
-        websocket.send(message);
-    }
-
-
-    function writeToScreen(message) {
-
-        console.log(message);
-    }
-
-
-
-
-    ////////////////////////////
-    //
-    // MAIN
-    //
-    window.addEventListener("load", init, false);
+    this.isConnected = false;
+    this.webSocket;
 }
+
+BitCoinTransactionListener.prototype = {
+    constructor: BitCoinTransactionListener,
+    InvokeOnMessageTest: function (evt) {
+        Debug("InvokeOnMessageTest recieved : ", evt);
+        onMessage(evt);
+    },
+    Debug: function (message) {
+        if (this.DebugWindow === undefined) {
+            console.log("BitCoinTransactionListener : " + message);
+        }
+        else {
+            this.DebugWindow.WriteLine("BitCoinTransactionListener : " + message);
+        }
+    },
+    Connect: function () {
+        this.Debug("Connect");
+
+        if (this.isConnected) {
+            Debug("! Trying to connect but already connected.");
+            return;
+        }
+
+        this.webSocket = new WebSocket(this.wsUri);
+
+        this.webSocket.onopen = function (evt) {
+            this.onOpen(evt)
+        };
+
+        this.webSocket.onclose = function (evt) {
+            this.onClose(evt)
+        };
+
+        this.webSocket.onmessage = function (evt) {
+            this.onMessage(evt)
+        };
+
+        this.webSocket.onerror = function (evt) {
+            this.onError(evt)
+        };
+    },
+    Subscribe: function (address) {
+        this.Debug("Subscribe");
+
+        if (!this.isConnected) {
+            this.Debug("! Trying to subscribe but not connected.");
+            return;
+        }
+
+        if (address === undefined) {
+            this.Send('{"op":"unconfirmed_sub"}')
+        }
+        else {
+            this.Send('{"op":"addr_sub", "addr":"' + address + '"}');
+        }
+    },
+    Send: function (message) {
+        this.Debug("Send");
+
+        if (!this.isConnected) {
+            this.Debug("! Trying to send but not connected.");
+            return;
+        }
+
+        this.Debug("Sending : ", message);
+        this.websocket.send(message);
+    },
+    onOpen: function (evt) {
+        this.Debug("onOpen received : ", evt);
+    },
+    onClose: function (evt) {
+        this.Debug("onClose recieved : ", evt);
+    },
+    onMessage: function (evt) {
+        this.Debug("onMessage recieved : ", evt);
+        this.Debug("Calling fnOnMessage()");
+        this.fnOnMessage(evt);
+    },
+    onError: function (evt) {
+        this.Debug("onError recieved : ", evt);
+    }
+};
